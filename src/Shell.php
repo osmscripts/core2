@@ -52,4 +52,13 @@ class Shell extends Object_
         }
     }
 
+    public function output($command) {
+        exec($command, $output, $exitCode);
+        if ($exitCode) {
+            throw new Exception("Last command failed, error code: {$exitCode}");
+        }
+
+        return $output;
+    }
+
 }
