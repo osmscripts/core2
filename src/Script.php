@@ -12,19 +12,28 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @property string $name @required
- * @property string $path @required
- * @property string $cwd @required
- * @property object|ComposerLockHint $composer_lock @required
- * @property object[]|PackageHint[] $installed_packages @required Package information from `composer.lock` file
- * @property string[] $package_names @required
- * @property object[]|PackageHint[] $packages @required Package information from package `composer.json` files
- * @property object|ConfigHint $config @required
- * @property Application $application @required
+ * Class for currently executed script. Contains all the objects: helpers which provide useful APIs,
+ * console application with its commands, knowledge about this project's packages and more.
  *
- * @property Command $command
- * @property InputInterface $input
- * @property OutputInterface $output
+ * Script configures itself from the section of `composer.json` files having the same specified in `name` property.
+ *
+ * Currently executed script instance is accessible via global read-only `$script` variable.
+ *
+ * @property string $name @required Script name
+ * @property string $path @required Directory of the Composer project containing the script
+ * @property string $cwd @required Current working directory - a directory from which the script is invoked
+ * @property object|ComposerLockHint $composer_lock @required Contents of project's `composer.lock` file
+ * @property object[]|PackageHint[] $installed_packages @required Package information from `composer.lock` file
+ * @property string[] $package_names @required Names of currently installed packages
+ * @property object[]|PackageHint[] $packages @required Package information from package `composer.json` files
+ * @property object|ConfigHint $config @required Script configuration, merged from all package `composer.json` files
+ * @property Application $application @required Symfony console application instance helping with
+ *      reading command-line arguments, dispatching to correct command class and outputting to console
+ *
+ * @property Command $command Currently executed command. Only available since command execution is started
+ * @property InputInterface $input Command-line arguments and options user passed to this command.
+ *      Only available since command execution is started
+ * @property OutputInterface $output Output console. Only available since command execution is started
  */
 class Script extends Object_
 {
@@ -106,6 +115,12 @@ class Script extends Object_
 
     protected $singletons = [];
 
+    /**
+     * Returns an instance of specified class, the same for all callers.
+     *
+     * @param string $class Full class name
+     * @return mixed
+     */
     public function singleton($class) {
         if (!isset($this->singletons[$class])) {
             $this->singletons[$class] = new $class();
@@ -114,6 +129,11 @@ class Script extends Object_
         return $this->singletons[$class];
     }
 
+    /**
+     * Executes this script. Under the hood, executes requested Command
+     *
+     * @return int
+     */
     public function run() {
         return $this->application->run();
     }
