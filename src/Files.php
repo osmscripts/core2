@@ -76,18 +76,18 @@ class Files extends Object_
     /**
      * Create file with specified contents or overwrite if it already exists.
      *
-     * @param string $path Filename
+     * @param string $filename Filename
      * @param string $contents Contents
      */
-    public function save($path, $contents) {
-        $action = is_file($path) ? 'updated' : 'created';
+    public function save($filename, $contents) {
+        $action = is_file($filename) ? 'updated' : 'created';
 
-        if (!is_dir(dirname($path))) {
-            mkdir(dirname($path), 0777, true);
+        if (!is_dir(dirname($filename))) {
+            mkdir(dirname($filename), 0777, true);
         }
 
-        file_put_contents($path, $contents);
+        file_put_contents($filename, $contents);
 
-        $this->output->writeln("! {$path} {$action}");
+        $this->output->writeln("! {$filename} {$action}");
     }
 }

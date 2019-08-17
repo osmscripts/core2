@@ -8,6 +8,7 @@ namespace OsmScripts\Core\Hints;
  *
  * @property string $name Script title
  * @property CommandHint[] $commands Commands registered for the script
+ * @property string[] $variables Known script variables
  */
 abstract class ConfigHint
 {

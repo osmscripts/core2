@@ -6,7 +6,7 @@ use Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Helper class for running comands in local shell
+ * Helper class for running commands in local shell
  *
  * @property OutputInterface $output Output console
  */
