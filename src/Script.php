@@ -49,10 +49,10 @@ class Script extends Object_
         $result = new stdClass();
 
         foreach ($this->project->packages as $name => $package) {
-            $commands = isset($package->extra->commands) ? (array)$package->extra->commands : [];
+            $commands = isset($package->json->extra->commands) ? (array)$package->json->extra->commands : [];
 
             /* @var ConfigHint $config */
-            $config = $package->extra->{$this->name} ?? new stdClass();
+            $config = $package->json->extra->{$this->name} ?? new stdClass();
 
             if (isset($config->commands)) {
                 $commands = array_merge($commands, (array)$config->commands);

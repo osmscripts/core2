@@ -10,10 +10,8 @@ use OsmScripts\Core\Hints\PackageHint;
  * Information about Composer project in $path directory
  *
  * @property string $path @required Project's path
- * @property object|ComposerLockHint $composer_lock @required Contents of project's `composer.lock` file
- * @property object[]|PackageHint[] $installed_packages @required Package information from `composer.lock` file
- * @property string[] $package_names @required Names of currently installed packages
- * @property object[]|PackageHint[] $packages @required Package information from package `composer.json` files
+ * @property object|ComposerLockHint $lock @required Contents of project's `composer.lock` file
+ * @property object[]|Package[] $packages @required Package information from package `composer.json` files
  * @property bool $current @required True if currently executed script is defined in this project
  *
  * @property Utils $utils @required various helper functions
@@ -28,9 +26,7 @@ class Project extends Object_
         global $script;
 
         switch ($property) {
-            case 'composer_lock': return $this->composer_lock = $this->getComposerLock();
-            case 'installed_packages': return $this->installed_packages = $this->getInstalledPackages();
-            case 'package_names': return $this->package_names = array_keys($this->installed_packages);
+            case 'lock': return $this->lock = $this->getComposerLock();
             case 'packages': return $this->packages = $this->getPackages();
             case 'current': return $this->current = $script->path === $this->path;
 
@@ -46,21 +42,11 @@ class Project extends Object_
         return $this->utils->readJsonOrFail("{$this->path}/composer.lock");
     }
 
-    protected function getInstalledPackages() {
-        $result = [];
-
-        foreach ($this->composer_lock->packages ?? [] as $package) {
-            $result[$package->name] = $package;
-        }
-
-        return $result;
-    }
-
     protected function getPackages() {
         $result = [];
 
-        foreach ($this->package_names as $name) {
-            $result[$name] = $this->utils->readJsonOrFail("{$this->path}/vendor/{$name}/composer.json");
+        foreach ($this->lock->packages ?? [] as $config) {
+            $result[$config->name] = new Package(['project' => $this, 'lock' => $config]);
         }
 
         return $result;
@@ -77,8 +63,8 @@ class Project extends Object_
     }
 
     public function verifyNoUncommittedChanges() {
-        foreach ($this->package_names as $package) {
-            $this->verifyNoUncommittedChangesInDirectory("vendor/{$package}");
+        foreach ($this->packages as $package) {
+            $this->verifyNoUncommittedChangesInDirectory($package->path);
         }
     }
 
@@ -144,5 +130,9 @@ class Project extends Object_
 
     public function update() {
         $this->shell->run("composer update");
+    }
+
+    public function getPackage($name) {
+        return $this->project->packages[$name] ?? new Package(['project' => $this, 'name' => $name]);
     }
 }

@@ -34,10 +34,13 @@ class Var_ extends Command
         global $script;
 
         $result = "";
-        foreach ($script->config->variables as $name => $description) {
+        foreach ($script->config->variables ?? [] as $name => $description) {
             $result .= "* {$name} - {$description}\n";
         }
 
+        if ($result) {
+            $result = "Known variables:\n\n{$result}";
+        }
         return $result;
     }
 
@@ -46,13 +49,7 @@ class Var_ extends Command
     protected function configure() {
         $this
             ->setDescription("Gets, sets, or clears script variables")
-            ->setHelp(<<<EOT
-Known variables:
-
-{$this->variable_help}
-
-EOT
-            )
+            ->setHelp($this->variable_help)
             ->addArgument('variable', InputArgument::IS_ARRAY,
                 "'VAR' shows the variable, 'VAR=' clears the variable, 'VAR=value' sets the variable");
     }
