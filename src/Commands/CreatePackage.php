@@ -22,7 +22,6 @@ use Symfony\Component\Console\Input\InputOption;
  * @property Shell $shell @required Helper for running commands in local shell
  * @property Project $project Information about Composer project in current working directory
  * @property Git $git Git helper
- * @property string $script_path @required Directory of the Composer project containing currently executed script
  * @property string $script_name @required Name of currently executed script
  *
  * @property string $package @required Name of package to be created
@@ -33,8 +32,6 @@ use Symfony\Component\Console\Input\InputOption;
  */
 abstract class CreatePackage extends Command
 {
-    public $expect_current = false;
-
     #region Properties
     public function __get($property) {
         /* @var Script $script */
@@ -46,7 +43,6 @@ abstract class CreatePackage extends Command
             case 'shell': return $this->shell = $script->singleton(Shell::class);
             case 'project': return $this->project = new Project(['path' => $script->cwd]);
             case 'git': return $this->git = $script->singleton(Git::class);
-            case 'script_path': return $this->script_path = $script->path;
             case 'script_name': return $this->script_name = $script->name;
 
             // arguments and options
@@ -64,7 +60,9 @@ abstract class CreatePackage extends Command
 
     protected function getNamespace() {
         if (!($result = $this->input->getOption('namespace'))) {
-            $result = implode('\\', array_map('ucfirst', explode('/', $this->package)));
+            $result = implode('\\', array_map(function($namespace) {
+                return implode(array_map('ucfirst', explode(' ', strtr($namespace, ':_-', '   '))));
+            }, explode('/', $this->package)));
         }
 
         if (strrpos($result, '\\') !== strlen($result) - strlen('\\')) {
@@ -94,12 +92,6 @@ abstract class CreatePackage extends Command
     }
 
     protected function handle() {
-        if ($this->expect_current) {
-            // this command is expected to run from the global Composer installation and it is expected
-            // to generate files in the the global Composer installation
-            $this->project->verifyCurrent();
-        }
-
         if (!$this->no_update) {
             // in the end, this command runs `composer update` which overwrites files in project's `vendor`
             // directory, so all the files in `vendor` directory are expected to be committed to their Git repos

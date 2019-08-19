@@ -106,4 +106,10 @@ class Script extends Object_
     public function run() {
         return $this->application->run();
     }
+
+    public function workGlobally() {
+        $this->cwd = $this->path;
+        chdir($this->cwd);
+        $this->output->writeln("> cd {$this->cwd}");
+    }
 }
