@@ -110,7 +110,7 @@ class Project extends Object_
      */
     public function require($packageAndVersion, $repoUrl = null) {
         if ($repoUrl) {
-            if ($pos = strpos($packageAndVersion, ':') !== false) {
+            if (($pos = strpos($packageAndVersion, ':')) !== false) {
                 $package = substr($packageAndVersion, 0, $pos);
             }
             else {
@@ -124,7 +124,7 @@ class Project extends Object_
     }
 
     protected function registerRepo($package, $repoUrl) {
-        $name = strtr($package, '/', '_');
+        $name = strtr($package, '/-', '__');
         $this->shell->run("composer config repositories.{$name} vcs {$repoUrl}");
     }
 
