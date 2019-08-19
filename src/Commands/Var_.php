@@ -6,6 +6,7 @@ use OsmScripts\Core\Command;
 use OsmScripts\Core\Script;
 use OsmScripts\Core\Variables;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /** @noinspection PhpUnused */
 

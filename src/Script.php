@@ -4,7 +4,6 @@ namespace OsmScripts\Core;
 
 use OsmScripts\Core\Hints\ConfigHint;
 use stdClass;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -18,6 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @property string $name @required Script name
  * @property string $path @required Directory of the Composer project containing the script
+ * @property string $global One of GLOBAL_* constants
  * @property string $cwd @required Current working directory - a directory from which the script is invoked
  * @property Project $project @required Information about Composer project in which script is defined
  * @property object|ConfigHint $config @required Script configuration, merged from all package `composer.json` files
@@ -32,10 +32,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Script extends Object_
 {
+    const GLOBAL_ALWAYS = 'always';
+    const GLOBAL_UPON_REQUEST = 'upon_request';
+
     #region Properties
     public function __get($property) {
         switch ($property) {
             case 'path': return $this->path = dirname(dirname(dirname(dirname(__DIR__))));
+            case 'cwd': return $this->cwd = getcwd();
             case 'project': return $this->project = new Project(['path' => $this->path]);
             case 'config': return $this->config = $this->getConfig();
             case 'application': return $this->application = $this->getApplication();
@@ -70,6 +74,7 @@ class Script extends Object_
 
     protected function getApplication() {
         $app = new Application($this->config->name ?? "{$this->name} Script");
+        $app->setWorkDir();
 
         foreach ($this->config->commands as $name => $command) {
             /* @var Command $command_*/
