@@ -83,11 +83,33 @@ class Files extends Object_
         $action = is_file($filename) ? 'updated' : 'created';
 
         if (!is_dir(dirname($filename))) {
-            mkdir(dirname($filename), 0777, true);
+            mkdir(dirname($filename), 0775, true);
         }
 
         file_put_contents($filename, $contents);
 
         $this->output->writeln("! {$filename} {$action}");
+    }
+
+    public function createLink($target, $link) {
+        if (file_exists($link)) {
+            return;
+        }
+
+        if (!is_dir(dirname($link))) {
+            mkdir(dirname($link), 0775, true);
+        }
+
+        symlink(realpath($target), $link);
+        $this->output->writeln("! {$link} => {$target} link created");
+    }
+
+    public function deleteLink($link) {
+        if (!is_link($link)) {
+            return;
+        }
+
+        unlink($link);
+        $this->output->writeln("! {$link} link deleted");
     }
 }
