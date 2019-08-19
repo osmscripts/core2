@@ -74,6 +74,6 @@ class Git extends Object_
         $this->shell->run('git add .');
 
         // create first Git commit
-        $this->shell->run('git commit -am "{$message}"');
+        $this->shell->run("git commit -am \"{$message}\"");
     }
 }
