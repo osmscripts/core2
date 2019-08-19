@@ -96,6 +96,10 @@ class Files extends Object_
             return;
         }
 
+        if (!file_exists(realpath($target))) {
+            return;
+        }
+
         if (!is_dir(dirname($link))) {
             mkdir(dirname($link), 0775, true);
         }
