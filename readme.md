@@ -281,13 +281,6 @@ Packages define their configuration in their `composer.json` files. This configu
 
 Script commands which modify files in target project should do all necessary checks to prevent possible data loss.
 
-## Contributing ##
-
-Install development branch:
-
-	composer -g config repositories.osmscripts_core vcs git@github.com:osmscripts/core.git
-	composer -g require osmscripts/core:dev-master@dev
-
 ## License And Credits ##
 
 Copyright (C) 2019 - present UAB "Softnova".
