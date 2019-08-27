@@ -11,7 +11,7 @@ use OsmScripts\Core\Hints\PackageHint;
  *
  * @property string $path @required Project's path
  * @property object|ComposerLockHint $lock @required Contents of project's `composer.lock` file
- * @property object[]|Package[] $packages @required Package information from package `composer.json` files
+ * @property Package[] $packages @required Package information from package `composer.json` files
  * @property bool $current @required True if currently executed script is defined in this project
  *
  * @property Utils $utils @required various helper functions
