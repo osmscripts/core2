@@ -55,7 +55,7 @@ abstract class CreatePackage extends Command
             case 'path': return $this->path = "vendor/{$this->package}";
         }
 
-        return null;
+        return parent::__get($property);
     }
 
     protected function getNamespace() {

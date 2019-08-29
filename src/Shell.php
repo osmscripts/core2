@@ -21,7 +21,7 @@ class Shell extends Object_
             case 'output': return $this->output = $script->output;
         }
 
-        return null;
+        return parent::__get($property);
     }
     #endregion
 

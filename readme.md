@@ -41,7 +41,7 @@ See also examples below.
 	            case 'files': return $this->files = $script->singleton(Files::class);
 	        }
 	
-	        return null;
+            return parent::__get($property);
 	    }
 	    #endregion
 
@@ -97,7 +97,7 @@ You may create and remove symbolic links:
 	            case 'shell': return $this->shell = $script->singleton(Shell::class);
 	        }
 	
-	        return null;
+            return parent::__get($property);
 	    }
 	    #endregion
 
@@ -137,7 +137,7 @@ You may create and remove symbolic links:
 	            case 'utils': return $this->utils = $script->singleton(Utils::class);
 	        }
 	
-	        return null;
+            return parent::__get($property);
 	    }
 	    #endregion
 
@@ -174,7 +174,7 @@ You may create and remove symbolic links:
 	            case 'git': return $this->git = $script->singleton(Git::class);
 	        }
 	
-	        return null;
+            return parent::__get($property);
 	    }
 	    #endregion
 
@@ -224,7 +224,7 @@ You may create and remove symbolic links:
 	            case 'project': return $this->project = new Project(['path' => $script->cwd]);
 	        }
 	
-	        return null;
+            return parent::__get($property);
 	    }
 	    #endregion
 	

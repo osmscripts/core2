@@ -46,7 +46,7 @@ class Script extends Object_
             case 'utils': return $this->utils = $this->singleton(Utils::class);
         }
 
-        return null;
+        return parent::__get($property);
     }
 
     protected function getConfig() {

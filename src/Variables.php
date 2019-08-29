@@ -26,7 +26,7 @@ class Variables extends Object_
             case 'data': return $this->data = $this->readJson($this->filename) ?: [];
         }
 
-        return null;
+        return parent::__get($property);
     }
     #endregion
 

@@ -18,7 +18,7 @@ class Git extends Object_
             case 'shell': return $this->shell = $script->singleton(Shell::class);
         }
 
-        return null;
+        return parent::__get($property);
     }
     #endregion
 

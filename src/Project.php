@@ -35,7 +35,7 @@ class Project extends Object_
             case 'git': return $this->git = $script->singleton(Git::class);
         }
 
-        return null;
+        return parent::__get($property);
     }
 
     protected function getComposerLock() {

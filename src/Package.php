@@ -33,7 +33,7 @@ class Package extends Object_
             case 'utils': return $this->utils = $script->singleton(Utils::class);
         }
 
-        return null;
+        return parent::__get($property);
     }
 
     protected function getNamespace() {

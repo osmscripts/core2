@@ -27,7 +27,7 @@ class Var_ extends Command
             case 'variable_help': return $this->variable_help = $this->getVariableHelp();
         }
 
-        return null;
+        return parent::__get($property);
     }
 
     protected function getVariableHelp() {
