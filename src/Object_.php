@@ -13,4 +13,8 @@ class Object_
             $this->$property = $value;
         }
     }
+
+    public function __get($property) {
+        return null;
+    }
 }

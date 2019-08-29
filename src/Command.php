@@ -24,6 +24,10 @@ class Command extends BaseCommand
         }
     }
 
+    public function __get($property) {
+        return null;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output) {
         /* @var Script $script */
         global $script;
