@@ -33,6 +33,11 @@ class Shell extends Object_
      * @param bool $quiet Set to true to prevent notifying user about switching directories
      */
     public function cd($path, callable $callback, $quiet = false) {
+        if (!$path) {
+            $callback();
+            return;
+        }
+
         $cwd = getcwd();
         if (!$quiet) {
             $this->output->writeln("> cd {$path}");
