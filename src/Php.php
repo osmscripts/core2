@@ -2,25 +2,16 @@
 
 namespace OsmScripts\Core;
 
-/**
- * @property string $contents @temp
- */
-class Php extends Object_
+class Php extends Editor
 {
-    public function edit($contents, callable $callback) {
-        $this->contents = $contents;
-
-        try {
-            $callback();
-            return $this->contents;
-        }
-        finally {
-            $this->contents = null;
-        }
-    }
-
     public function use_($class) {
-        $use = "use {$class};\n";
+        $use = "use {$class};";
+
+        if (mb_strpos($this->contents, $use) !== false) {
+            return;
+        }
+
+        $use .= "\n";
 
         if (preg_match('/use\s+.*;\s*\R/u', $this->contents, $match, PREG_OFFSET_CAPTURE)) {
             // if there is use statement, we will insert before it
@@ -34,13 +25,5 @@ class Php extends Object_
         }
 
         $this->insertBefore($pos, $use);
-    }
-
-    public function insertBefore($pos, $contents) {
-        $this->contents = mb_substr($this->contents, 0, $pos) . $contents . mb_substr($this->contents, $pos);
-    }
-
-    public function last($text) {
-        return mb_strrpos($this->contents, $text);
     }
 }
