@@ -79,6 +79,7 @@ class Var_ extends Command
                     $this->output->writeln("$argument={$this->variables->get($argument)}");
                 }
             }
+            $this->variables->save();
         }
     }
 }

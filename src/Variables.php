@@ -11,6 +11,7 @@ use stdClass;
  * @property string $script @required Currently executed script
  * @property string $filename @required File where surrent script variables are stored
  * @property array $data @required Array storing variable values
+ * @property bool $dirty
  */
 class Variables extends Object_
 {
@@ -60,7 +61,7 @@ class Variables extends Object_
         $this->data;
 
         $this->data[$variable] = $value;
-        $this->files->save($this->filename, json_encode((object)$this->data, JSON_PRETTY_PRINT));
+        $this->dirty = true;
     }
 
     /**
@@ -73,7 +74,16 @@ class Variables extends Object_
         $this->data;
 
         unset($this->data[$variable]);
-        $this->files->save($this->filename, json_encode((object)$this->data, JSON_PRETTY_PRINT));
+        $this->dirty = true;
+    }
+
+    public function save() {
+        if (!$this->dirty) {
+            return;
+        }
+
+        $this->files->save($this->filename, json_encode((object)$this->data,
+            JSON_PRETTY_PRINT));
     }
 
     protected function readJson($filename) {
