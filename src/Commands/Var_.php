@@ -18,16 +18,16 @@ use Symfony\Component\Console\Input\InputOption;
 class Var_ extends Command
 {
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         /* @var Script $script */
         global $script;
 
         switch ($property) {
-            case 'variables': return $this->variables = $script->singleton(Variables::class);
-            case 'variable_help': return $this->variable_help = $this->getVariableHelp();
+            case 'variables': return $script->singleton(Variables::class);
+            case 'variable_help': return $this->getVariableHelp();
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
 
     protected function getVariableHelp() {

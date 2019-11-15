@@ -36,17 +36,17 @@ class Script extends Object_
     const GLOBAL_UPON_REQUEST = 'upon_request';
 
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         switch ($property) {
-            case 'path': return $this->path = dirname(dirname(dirname(dirname(__DIR__))));
-            case 'cwd': return $this->cwd = getcwd();
-            case 'project': return $this->project = new Project(['path' => $this->path]);
-            case 'config': return $this->config = $this->getConfig();
-            case 'application': return $this->application = $this->getApplication();
-            case 'utils': return $this->utils = $this->singleton(Utils::class);
+            case 'path': return dirname(dirname(dirname(dirname(__DIR__))));
+            case 'cwd': return getcwd();
+            case 'project': return new Project(['path' => $this->path]);
+            case 'config': return $this->getConfig();
+            case 'application': return $this->getApplication();
+            case 'utils': return $this->singleton(Utils::class);
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
 
     protected function getConfig() {

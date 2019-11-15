@@ -14,7 +14,7 @@ However you can do it if needed by using the following commands (add `-g` switch
 All the API is divided into several helper classes. In order to use a helper class:
 
 * define `@property` in your class comment for holding a reference to instance of the helper class;
-* add `case` in `__get()` method of your class which retrieves helper class instance;
+* add `case` in `default()` method of your class which retrieves helper class instance;
 * in other methods of your class, use methods of the helper class instance.
 
 See also examples below.
@@ -33,15 +33,15 @@ See also examples below.
 	 */
 	class YourClass extends Object_ {
 	    #region Properties
-	    public function __get($property) {
+	    public function default($property) {
 	        /* @var Script $script */
 	        global $script;
 	
 	        switch ($property) {
-	            case 'files': return $this->files = $script->singleton(Files::class);
+	            case 'files': return $script->singleton(Files::class);
 	        }
 	
-            return parent::__get($property);
+            return parent::default($property);
 	    }
 	    #endregion
 
@@ -89,15 +89,15 @@ You may create and remove symbolic links:
 	 */
 	class YourClass extends Object_ {
 	    #region Properties
-	    public function __get($property) {
+	    public function default($property) {
 	        /* @var Script $script */
 	        global $script;
 	
 	        switch ($property) {
-	            case 'shell': return $this->shell = $script->singleton(Shell::class);
+	            case 'shell': return $script->singleton(Shell::class);
 	        }
 	
-            return parent::__get($property);
+            return parent::default($property);
 	    }
 	    #endregion
 
@@ -129,15 +129,15 @@ You may create and remove symbolic links:
 	 */
 	class YourClass extends Object_ {
 	    #region Properties
-	    public function __get($property) {
+	    public function default($property) {
 	        /* @var Script $script */
 	        global $script;
 	
 	        switch ($property) {
-	            case 'utils': return $this->utils = $script->singleton(Utils::class);
+	            case 'utils': return $script->singleton(Utils::class);
 	        }
 	
-            return parent::__get($property);
+            return parent::default($property);
 	    }
 	    #endregion
 
@@ -166,15 +166,15 @@ You may create and remove symbolic links:
 	 */
 	class YourClass extends Object_ {
 	    #region Properties
-	    public function __get($property) {
+	    public function default($property) {
 	        /* @var Script $script */
 	        global $script;
 	
 	        switch ($property) {
-	            case 'git': return $this->git = $script->singleton(Git::class);
+	            case 'git': return $script->singleton(Git::class);
 	        }
 	
-            return parent::__get($property);
+            return parent::default($property);
 	    }
 	    #endregion
 
@@ -216,15 +216,15 @@ You may create and remove symbolic links:
 	class YourClass extends Object_
 	{
 	    #region Properties
-	    public function __get($property) {
+	    public function default($property) {
 	        /* @var Script $script */
 	        global $script;
 	
 	        switch ($property) {
-	            case 'project': return $this->project = new Project(['path' => $script->cwd]);
+	            case 'project': return new Project(['path' => $script->cwd]);
 	        }
 	
-            return parent::__get($property);
+            return parent::default($property);
 	    }
 	    #endregion
 	

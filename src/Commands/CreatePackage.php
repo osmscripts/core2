@@ -33,29 +33,29 @@ use Symfony\Component\Console\Input\InputOption;
 abstract class CreatePackage extends Command
 {
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         /* @var Script $script */
         global $script;
 
         switch ($property) {
             // dependencies
-            case 'files': return $this->files = $script->singleton(Files::class);
-            case 'shell': return $this->shell = $script->singleton(Shell::class);
-            case 'project': return $this->project = new Project(['path' => $script->cwd]);
-            case 'git': return $this->git = $script->singleton(Git::class);
-            case 'script_name': return $this->script_name = $script->name;
+            case 'files': return $script->singleton(Files::class);
+            case 'shell': return $script->singleton(Shell::class);
+            case 'project': return new Project(['path' => $script->cwd]);
+            case 'git': return $script->singleton(Git::class);
+            case 'script_name': return $script->name;
 
             // arguments and options
-            case 'package': return $this->package = $this->input->getArgument('package');
-            case 'namespace': return $this->namespace = $this->getNamespace();
-            case 'repo_url': return $this->repo_url = $this->getRepoUrl();
-            case 'no_update': return $this->no_update = $this->input->getOption('no-update');
+            case 'package': return $this->input->getArgument('package');
+            case 'namespace': return $this->getNamespace();
+            case 'repo_url': return $this->getRepoUrl();
+            case 'no_update': return $this->input->getOption('no-update');
 
             // calculated properties
-            case 'path': return $this->path = "vendor/{$this->package}";
+            case 'path': return "vendor/{$this->package}";
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
 
     protected function getNamespace() {

@@ -10,15 +10,15 @@ namespace OsmScripts\Core;
 class Git extends Object_
 {
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         /* @var Script $script */
         global $script;
 
         switch ($property) {
-            case 'shell': return $this->shell = $script->singleton(Shell::class);
+            case 'shell': return $script->singleton(Shell::class);
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
     #endregion
 

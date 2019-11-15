@@ -16,18 +16,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Files extends Object_
 {
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         /* @var Script $script */
         global $script;
 
         switch ($property) {
-            case 'command': return $this->command = $script->command;
-            case 'path': return $this->path = $script->path;
-            case 'script': return $this->script = $script->name;
-            case 'output': return $this->output = $script->output;
+            case 'command': return $script->command;
+            case 'path': return $script->path;
+            case 'script': return $script->name;
+            case 'output': return $script->output;
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
     #endregion
 

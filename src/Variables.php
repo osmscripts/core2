@@ -16,18 +16,18 @@ use stdClass;
 class Variables extends Object_
 {
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         /* @var Script $script */
         global $script;
 
         switch ($property) {
-            case 'files': return $this->files = $script->singleton(Files::class);
-            case 'script': return $this->script = $script->name;
-            case 'filename': return $this->filename = ".osmscripts/{$this->script}.json";
-            case 'data': return $this->data = $this->readJson($this->filename) ?: [];
+            case 'files': return $script->singleton(Files::class);
+            case 'script': return $script->name;
+            case 'filename': return ".osmscripts/{$this->script}.json";
+            case 'data': return $this->readJson($this->filename) ?: [];
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
     #endregion
 

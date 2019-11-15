@@ -18,22 +18,21 @@ use stdClass;
 class Package extends Object_
 {
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         /* @var Script $script */
         global $script;
 
         switch ($property) {
-            case 'lock': return $this->lock = new stdClass();
-            case 'name': return $this->name = $this->lock->name;
-            case 'path': return $this->path = "vendor/{$this->name}";
-            case 'json': return $this->json =
-                $this->utils->readJsonOrFail("{$this->project->path}/{$this->path}/composer.json");
-            case 'namespace': return $this->namespace = $this->getNamespace();
+            case 'lock': return new stdClass();
+            case 'name': return $this->lock->name;
+            case 'path': return "vendor/{$this->name}";
+            case 'json': return $this->utils->readJsonOrFail("{$this->project->path}/{$this->path}/composer.json");
+            case 'namespace': return $this->getNamespace();
 
-            case 'utils': return $this->utils = $script->singleton(Utils::class);
+            case 'utils': return $script->singleton(Utils::class);
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
 
     protected function getNamespace() {

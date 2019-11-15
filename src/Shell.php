@@ -13,15 +13,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Shell extends Object_
 {
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         /* @var Script $script */
         global $script;
 
         switch ($property) {
-            case 'output': return $this->output = $script->output;
+            case 'output': return $script->output;
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
     #endregion
 

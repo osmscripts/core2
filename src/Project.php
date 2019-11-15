@@ -21,21 +21,21 @@ use OsmScripts\Core\Hints\PackageHint;
 class Project extends Object_
 {
     #region Properties
-    public function __get($property) {
+    public function default($property) {
         /* @var Script $script */
         global $script;
 
         switch ($property) {
-            case 'lock': return $this->lock = $this->getComposerLock();
-            case 'packages': return $this->packages = $this->getPackages();
-            case 'current': return $this->current = $script->path === $this->path;
+            case 'lock': return $this->getComposerLock();
+            case 'packages': return $this->getPackages();
+            case 'current': return $script->path === $this->path;
 
-            case 'utils': return $this->utils = $script->singleton(Utils::class);
-            case 'shell': return $this->shell = $script->singleton(Shell::class);
-            case 'git': return $this->git = $script->singleton(Git::class);
+            case 'utils': return $script->singleton(Utils::class);
+            case 'shell': return $script->singleton(Shell::class);
+            case 'git': return $script->singleton(Git::class);
         }
 
-        return parent::__get($property);
+        return parent::default($property);
     }
 
     protected function getComposerLock() {

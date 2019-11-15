@@ -15,6 +15,10 @@ class Object_
     }
 
     public function __get($property) {
+        return $this->$property = $this->default($property);
+    }
+
+    protected function default(/** @noinspection PhpUnusedParameterInspection */ $property) {
         return null;
     }
 }
