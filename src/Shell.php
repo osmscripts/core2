@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Helper class for running commands in local shell
  *
  * @property OutputInterface $output Output console
+ * @property string $user User account to run commands with
  */
 class Shell extends Object_
 {
@@ -66,6 +67,10 @@ class Shell extends Object_
             $this->output->writeln("> {$command}");
         }
 
+        if ($this->user && PHP_OS_FAMILY == 'Linux') {
+            $command = "su -s /bin/bash -c " . escapeshellarg($command) . " {$this->user}";
+        }
+
         passthru($command, $exitCode);
         if ($exitCode) {
             throw new Exception("Last command failed, error code: {$exitCode}");
@@ -88,4 +93,15 @@ class Shell extends Object_
         return $output;
     }
 
+    public function su($user, callable $callback) {
+        $oldUser = $this->user;
+        $this->user = $user;
+
+        try {
+            $callback();
+        }
+        finally {
+            $this->user = $oldUser;
+        }
+    }
 }
