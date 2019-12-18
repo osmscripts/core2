@@ -9,6 +9,7 @@ namespace OsmScripts\Core\Hints;
  * @property object $extra Additional package information in free format
  * @property string[] $bin Package scripts
  * @property object $autoload
+ * @property string $version
  */
 abstract class PackageHint
 {

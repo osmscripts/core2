@@ -29,6 +29,8 @@ use Symfony\Component\Console\Input\InputOption;
  * @property string $repo_url @required URL of the server Git repo
  * @property bool $no_update @required If set, skips creation and push of Git repo and Composer update
  * @property string $path @required Path to directory in `vendor` where new package is created
+ * @property string $base_package @required Base package which created package depends on
+ * @property string $version_constraint
  */
 abstract class CreatePackage extends Command
 {
@@ -53,6 +55,9 @@ abstract class CreatePackage extends Command
 
             // calculated properties
             case 'path': return "vendor/{$this->package}";
+            case 'base_package':
+                throw new \Exception("Calculate '$property' in default method");
+            case 'version_constraint': return $this->getVersionConstraint();
         }
 
         return parent::default($property);
@@ -74,6 +79,26 @@ abstract class CreatePackage extends Command
 
     protected function getRepoUrl() {
         return $this->input->getOption('repo_url') ?: "git@github.com:{$this->package}.git";
+    }
+
+    protected function getVersionConstraint() {
+        $version = $this->project->packages[$this->base_package]->lock->version;
+
+        if (preg_match('/^dev-|\.x-dev$/u', $version)) {
+            // in this project, base package is installed from some branch, so
+            // created package will depend on the same branch
+            return $version;
+        }
+
+        if (preg_match('/^v?(?<x>\d+)\.(?<y>\d+)/u', $version, $match)) {
+            // in this project, base package is installed from a version tag, so
+            // created package will depend on a SemVer version constraint in which
+            // currently installed version is a minimum requirement
+            return "^{$match['x']}.{$match['y']}";
+        }
+
+        throw new \Exception("Can't infer a version constraint for a newly created " .
+            "package from installed version '{$version}' of the base package '$this->base_package'");
     }
     #endregion
 
