@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @property string $global One of GLOBAL_* constants
  * @property string $cwd @required Current working directory - a directory from which the script is invoked
  * @property Project $project @required Information about Composer project in which script is defined
- * @property object|ConfigHint $config @required Script configuration, merged from all package `composer.json` files
+ * @property object|ConfigHint $config @required Script configuration, merged from all package `osmscripts.json` files
  * @property Application $application @required Symfony console application instance helping with
  *      reading command-line arguments, dispatching to correct command class and outputting to console
  * @property Utils $utils @required various helper functions
@@ -53,10 +53,10 @@ class Script extends Object_
         $result = new stdClass();
 
         foreach ($this->project->packages as $name => $package) {
-            $commands = isset($package->json->extra->commands) ? (array)$package->json->extra->commands : [];
+            $commands = isset($package->config->commands) ? (array)$package->config->commands : [];
 
             /* @var ConfigHint $config */
-            $config = $package->json->extra->{$this->name} ?? new stdClass();
+            $config = $package->config->{$this->name} ?? new stdClass();
 
             if (isset($config->commands)) {
                 $commands = array_merge($commands, (array)$config->commands);

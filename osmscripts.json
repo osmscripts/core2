@@ -1,0 +1,5 @@
+{
+    "commands": {
+        "var": "OsmScripts\\Core\\Commands\\Var_"
+    }
+}
