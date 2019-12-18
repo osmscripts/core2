@@ -1,6 +1,6 @@
 {
     "name": "osmscripts/core",
-    "description": "Library of useful classes for fast development of shell commands.",
+    "description": "Micro-framework for fast shell command development.",
     "license": "GPL-3.0-only",
     "authors": [
         {
