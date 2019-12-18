@@ -108,7 +108,7 @@ class Project extends Object_
      * @param null $repoUrl
      * @throws Exception
      */
-    public function require($packageAndVersion, $repoUrl = null) {
+    public function require($packageAndVersion, $repoUrl = null, $noScripts = false) {
         if ($repoUrl) {
             if (($pos = strpos($packageAndVersion, ':')) !== false) {
                 $package = substr($packageAndVersion, 0, $pos);
@@ -120,7 +120,9 @@ class Project extends Object_
             $this->registerRepo($package, $repoUrl);
         }
 
-        $this->shell->run("composer require {$packageAndVersion}");
+        $args = $noScripts ? '--no-scripts' : '';
+
+        $this->shell->run("composer require {$packageAndVersion} {$args}");
     }
 
     protected function registerRepo($package, $repoUrl) {

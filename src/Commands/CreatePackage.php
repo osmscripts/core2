@@ -34,6 +34,8 @@ use Symfony\Component\Console\Input\InputOption;
  */
 abstract class CreatePackage extends Command
 {
+    public $no_scripts = false;
+
     #region Properties
     public function default($property) {
         /* @var Script $script */
@@ -140,7 +142,8 @@ abstract class CreatePackage extends Command
             //
             // Package PHP namespace will be resolved to `src` subdirectory so all PHP classes
             // in `src` subdirectory will be autoloaded.
-            $this->project->require("{$this->package}:dev-master@dev", $this->repo_url);
+            $this->project->require("{$this->package}:dev-master@dev",
+                $this->repo_url, $this->no_scripts);
         }
 
         $this->shell->run("{$this->script_name} var package={$this->package}");
