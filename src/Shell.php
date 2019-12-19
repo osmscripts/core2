@@ -32,11 +32,11 @@ class Shell extends Object_
      * @param string $path Directory to switch to
      * @param callable $callback Callback function to be executed in specified directory
      * @param bool $quiet Set to true to prevent notifying user about switching directories
+     * @return mixed
      */
     public function cd($path, callable $callback, $quiet = false) {
         if (!$path) {
-            $callback();
-            return;
+            return $callback();
         }
 
         $cwd = getcwd();
@@ -46,7 +46,7 @@ class Shell extends Object_
         chdir($path);
 
         try {
-            $callback();
+            return $callback();
         }
         finally {
             if (!$quiet) {

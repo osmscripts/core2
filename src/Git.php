@@ -76,4 +76,8 @@ class Git extends Object_
         // create first Git commit
         $this->shell->run("git commit -am \"{$message}\"");
     }
+
+    public function getLatestTag() {
+        return $this->shell->output('git describe --tags')[0];
+    }
 }

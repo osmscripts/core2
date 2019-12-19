@@ -86,10 +86,19 @@ abstract class CreatePackage extends Command
     protected function getVersionConstraint() {
         $version = $this->project->packages[$this->base_package]->lock->version;
 
-        if (preg_match('/^dev-|\.x-dev$/u', $version)) {
+        if (preg_match('/^dev-/u', $version)) {
             // in this project, base package is installed from some branch, so
             // created package will depend on the same branch
             return $version;
+        }
+
+        if (preg_match('/\.x-dev$/u', $version)) {
+            // in this project, base package is on version support branch, so
+            // try to get the latest version tag
+
+            $version = $this->shell->cd("vendor/{$this->base_package}", function() {
+                return $this->git->getLatestTag();
+            }, true);
         }
 
         if (preg_match('/^v?(?<x>\d+)\.(?<y>\d+)/u', $version, $match)) {
