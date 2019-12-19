@@ -49,6 +49,9 @@ class Project extends Object_
             $result[$config->name] = new Package(['project' => $this, 'lock' => $config]);
         }
 
+        foreach ($this->lock->{'packages-dev'} ?? [] as $config) {
+            $result[$config->name] = new Package(['project' => $this, 'lock' => $config]);
+        }
         return $result;
     }
     #endregion
