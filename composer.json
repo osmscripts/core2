@@ -1,6 +1,6 @@
 {
     "name": "osmscripts/core",
-    "description": "Micro-framework for building shell commands.",
+    "description": "PHP micro-framework for building shell commands",
     "license": "GPL-3.0-only",
     "authors": [
         {
