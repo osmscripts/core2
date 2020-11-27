@@ -1,5 +1,5 @@
 {
-    "name": "osmscripts/core",
+    "name": "osmscripts/core2",
     "description": "PHP micro-framework for building shell commands",
     "license": "GPL-3.0-only",
     "authors": [
@@ -14,7 +14,7 @@
         }
     },
     "require": {
-        "php": "^7.2",
+        "php": ">=7.3",
         "symfony/console": "^4.3"
     }
 }
